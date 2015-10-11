@@ -6,7 +6,11 @@
 package mips;
 
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -18,8 +22,15 @@ public class MIPSGui {
     private int height = 200;
     //Main pane objects
     private Stage primaryStage;
-    private BorderPane mainPane;
+    private Pane mainPane;
     private Scene mainScene;
+    //for the main layout
+    private MenuBar menuBar;
+    private final Menu options = new Menu("Options");
+    private TabPane tabs;
+    private Tab arithmeticTab;
+    private Tab syscalls;
+    private Tab directives;
 
     /**
      * Constructor takes a stage as a param
@@ -44,7 +55,7 @@ public class MIPSGui {
      * Initializes the main pane 
      */
     public void initMainPane(){
-        mainPane = new BorderPane();
+        mainPane = new Pane();
     }
     /**
      * Initializes the scene with the pan and width and height 
@@ -59,12 +70,32 @@ public class MIPSGui {
     public final void init(){
         initMainPane();
         initScene();
+        initApp();
     }
+    
     /**
      * 
      * @return The main border pane
      */
-    public BorderPane getMainPane(){
+    public Pane getMainPane(){
         return mainPane;
+    }
+    public void initApp(){
+    menuBar = new MenuBar();
+    menuBar.setPrefHeight(20);
+    tabs = new TabPane();
+    tabs.tabClosingPolicyProperty().
+            set(TabPane.TabClosingPolicy.UNAVAILABLE);//closing not available
+    arithmeticTab = new Tab("Arithmetic");
+    directives = new Tab("Directives");
+    syscalls = new Tab("Syscalls");
+    //Add menu items to menubar
+    menuBar.getMenus().add(options);
+    //add the tabs
+    tabs.getTabs().addAll(arithmeticTab, syscalls, directives);
+    tabs.setTranslateY(menuBar.getPrefHeight()+5);//move the tabs a bit bellow
+    //add to main pane 
+    mainPane.getChildren().add(menuBar);
+    mainPane.getChildren().add(tabs);
     }
 }
